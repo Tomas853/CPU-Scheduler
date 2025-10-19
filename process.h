@@ -1,3 +1,6 @@
+#ifndef PROCESS_H
+#define PROCESS_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,7 +18,17 @@ typedef struct Process {
     uint32_t M;                         // M: Multiplier of CPU burst time
     uint32_t processID;                 // The process ID given upon input read
 
-    // Add other fields as needed
+    uint32_t remainingCPUTime;
+    uint32_t currentCPUTimeRun;
+    uint32_t currentIOBlockedTime;
+    uint32_t currentWaitingTime;
+    uint32_t finishingTime;
+    
+    uint32_t currentBurstRemaining;
+    uint32_t timeUntilUnblock;
+    uint32_t isBlocked;
+    uint32_t isRunning;
+    uint32_t isTerminated;
 } _process;
 
 uint32_t TOTAL_CREATED_PROCESSES = 0;   // The total number of processes constructed
@@ -164,48 +177,43 @@ void printSummaryData(_process process_list[])
     printf("\tAverage waiting time: %6f\n", avg_waiting_time);
 } // End of the print summary data function
 
-
-//implement "ready_queue", queue data structure to add and remove ready processes
-//---------begin----------
-typedef struct node {
-    _process* data;
-    struct node* next;
-} Node;
-
-typedef struct queue {
-    struct node* head;
-    struct node* tail;
-} Queue;
-
-
-void initQueue(Queue* q) {
-    q->head = q->tail = NULL;
-}
-
-bool isEmpty(Queue* q) {
-    return q->head == NULL;
-}
-
-void enqueue(Queue* q, _process* process) {
-    Node* newNode = malloc(sizof(Node));
-    newNode->data = process;
-    newNode->next = NULL;
-
-    if (isEmpty(q)) {
-        q->head = q->tail = newNode;
+_process* parse_input_file(const char* filename) {
+    FILE* fp = fopen(filename, "r");
+    if (!fp) {
+        perror("Failed to open input file");
+        exit(EXIT_FAILURE);
     }
-    else {
-        q->tail->next = newNode;
-        q->tail = newNode;
+
+    int n; //number of process inputs
+    fscanf(fp, "%d", &n);
+    TOTAL_CREATED_PROCESSES = n;
+
+    _process* process_list = malloc(sizeof(_process) * n);
+    if (!process_list) {
+        perror("Failed to allocate memory");
+        exit(EXIT_FAILURE);
     }
+
+    for (int i = 0; i < n; i++) {
+        char ch;
+        fscanf(fp, " %c", &ch);
+        fscanf(fp, "%u %u %u %u", &process_list[i].A,&process_list[i].B,&process_list[i].C,&process_list[i].M);
+        fscanf(fp, " %c", &ch);
+
+        process_list[i].processID = i;
+        process_list[i].remainingCPUTime = process_list[i].C;
+
+        process_list[i].isBlocked = false;
+        process_list[i].isRunning = false;
+        process_list[i].isTerminated = false;
+        process_list[i].currentCPUTimeRun = 0;
+        process_list[i].currentIOBlockedTime = 0;
+        process_list[i].currentWaitingTime = 0;
+        process_list[i].finishingTime = 0;
+    }
+
+    fclose(fp);
+    return process_list;
 }
 
-_process* dequeue(Queue* q, _process* process) {
-    if (isEmpty(q)) return NULL;
-    Node* tmp = q->head;
-    _process* process_old = tmp->data;
-    q->head = q->head->next;
-    free(tmp);
-    return process_old;
-}
-//---------end----------
+#endif // !PROCESS_H
