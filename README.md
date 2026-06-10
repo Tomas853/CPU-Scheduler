@@ -1,14 +1,28 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/QgV63YQg)
-#### CPTS 360 Programming Assignment 2
+### CPU Scheduler
 
-Base code and documentation for WSU CPTS360 Programming Assignment 2 (CPU Scheduler)
+A CPU scheduling simulator in C that models process execution and evaluates the performance of scheduling algorithms of the following: First-Come First-Serve (FCFS), Round Robin (RR), and Shortest Job First (SJF).
 
-**Files:**
+The simulator manages process state transitions between Ready, Running, Blocked, and Terminated states while tracking key operating system performance metrics such as CPU utilization, I/O utilization, waiting time, turnaround time, and throughput.
 
-`Makefile`	      _Compiles your simulator and runs the tests_
+Key Concepts Demonstrated:
+- Operating System Process Scheduling
+- Systems Programming in C
+- Queue-Based Data Structures
+- Performance Analysis and Simulation
+- Process State Management
+- Scheduling Algorithms
 
-`scheduler.c`		        _Initial codebase_
+Technical Highlights:
+- Implemented FCFS, Round Robin, and SJF scheduling policies
+- Simulated CPU bursts, I/O bursts, and process lifecycle management
+- Calculated scheduling performance metrics and generated summary statistics
+- Applied deterministic tie-breaking rules to ensure reproducible results
 
+Technologies: C, Linux, Operating Systems, Data Structures
+
+Ways to run:
 `random-numbers`		        _A list of random numbers (do not modify this file)_
 
 `sample_io`		        _Directory containing sample inputs and sample outputs_
+
+Documentation: [Documentation](./pa2_gebrewold.pdf)
