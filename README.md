@@ -22,8 +22,7 @@ The simulator manages process state transitions between Ready, Running, Blocked,
 C, Linux, Operating Systems, Data Structures
 
 #### Ways to run
-`random-numbers`		        _A list of random numbers (do not modify this file)_
-
-`sample_io`		        _Directory containing sample inputs and sample outputs_
+`make scheduler` or just run the scheduler executable after downloading this repository
+use either scheduler test runs from the three listed on the 'makefile' file and it will run each scheduler with each different input
 
 Documentation: [Documentation](./pa2_gebrewold.pdf)
